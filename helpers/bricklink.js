@@ -1,9 +1,8 @@
 const OAuth = require('oauth');
 const Inventory = require('../models/inventory');
 const Order = require("../models/order");
-const {isObjectsSame,mappingOrderItemsForChecked} = require('./functions');
-const {logger} = require('./logger');
-const { update } = require('../models/inventory');
+const mappingOrderItemsForChecked = require('./mappingOrderItemsForChecked');
+const logger  = require("../helpers/logger");
 const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../helpers/ApiHelper');
 const _ = require('lodash');
 

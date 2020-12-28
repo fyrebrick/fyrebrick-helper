@@ -22,7 +22,7 @@ const custom = {
       fatal: 'bold red'
     }
   };
-const logger = createLogger({
+module.exports = createLogger({
     levels:custom.levels,
     format: combine(
       timestamp(),
@@ -43,8 +43,3 @@ addColors({
     error: 'red',
     fatal: 'bold red'
   });
-
-module.exports = 
-{
-    logger
-};

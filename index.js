@@ -5,8 +5,10 @@ module.exports = {
         User : require('./models/user')
     },
     helpers:{
-        apiHelper: require('./helpers/ApiHelpers'),
+        apiHelper: require('./helpers/ApiHelper'),
         bricklink: require('./helpers/bricklink'),
-        logger: require('./helpers/logger')
+        logger: require('./helpers/logger'),
+        isObjectsSame: require('./helpers/isObjectsSame'),
+        mappingOrderItemsForChecked: require('./helpers/mappingOrderItemsForChecked')
     },
 };

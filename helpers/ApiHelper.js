@@ -1,4 +1,4 @@
-const { logger } = require("../helpers/logger");
+const logger = require("../helpers/logger");
 const User = require("../models/user");
 const increaseApiCallAmount = (_id,length=1) => {
     return new Promise(async(resolve, reject) =>{
@@ -29,7 +29,8 @@ const hasUserExceededAPiAmount = async(_id,length)=>{
 }
 module.exports = {
     increaseApiCallAmount,
-    hasUserExceededAPiAmount
+    hasUserExceededAPiAmount,
+    sleep
 }
 
 function sleep(ms) {
