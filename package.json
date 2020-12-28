@@ -1,0 +1,20 @@
+{
+  "name": "fyrebrick-helper",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pub":" npm publish --access public --scope=@snakehead007"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snakehead007/fyrebrick-helper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snakehead007/fyrebrick-helper/issues"
+  },
+  "homepage": "https://github.com/snakehead007/fyrebrick-helper#readme"
+}
