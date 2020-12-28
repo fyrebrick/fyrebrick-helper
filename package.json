@@ -1,11 +1,11 @@
 {
   "name": "fyrebrick-helper",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pub":" npm publish --access public --scope=@snakehead007"
+    "pub": " npm publish --access public --scope=@snakehead007"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/snakehead007/fyrebrick-helper/issues"
   },
-  "homepage": "https://github.com/snakehead007/fyrebrick-helper#readme"
+  "homepage": "https://github.com/snakehead007/fyrebrick-helper#readme",
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.8",
+    "oauth": "^0.9.15",
+    "winston": "^3.3.3"
+  }
 }
