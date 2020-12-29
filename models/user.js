@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const User = new mongoose.Schema({
+        userName:{
+            type:String
+        },
         API_call_amount:{
             daily:{
                 type:Number,
@@ -58,7 +61,49 @@ const User = new mongoose.Schema({
             ip:String,
             SECRET:String,
             VALUE:String
-            }]
+            }],
+        rank:{
+            global:{
+                views:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                    ],
+                lots:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                ],
+                items:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                ],
+            },
+            national:{
+                views:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                ],
+                lots:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                ],
+                items:[
+                    {
+                        date:Date,
+                        rank:Number
+                    }
+                ],
+            },
+        }
     },
 );
 
