@@ -57,6 +57,10 @@ const User = new mongoose.Schema({
         CONSUMER_SECRET : String,
         TOKEN_SECRET : String,
         TOKEN_VALUE : String,
+        isBricklinkCallback: {
+            type:Boolean,
+            default: false
+        },
         TOKENS:[{
             ip:String,
             SECRET:String,

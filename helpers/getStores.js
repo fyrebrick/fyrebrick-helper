@@ -1,15 +1,15 @@
 var https = require('https');
 const cheerio = require('cheerio');
-const superagent     = require('superagent')
-const Throttle    = require('superagent-throttle')
+const superagent = require('superagent')
+const Throttle = require('superagent-throttle')
 
 let throttle = new Throttle({
     active: true,     // set false to pause queue
-    rate: 5,          // how many requests can be sent every `ratePer`
-    ratePer: 10000,   // number of ms in which `rate` requests may be sent
-    concurrent: 2     // how many requests can be sent concurrently
+    rate: 1,          // how many requests can be sent every `ratePer`
+    ratePer: 500,   // number of ms in which `rate` requests may be sent
+    concurrent: 1     // how many requests can be sent concurrently
   })
-
+  //send 2 request per second (1 request per 0,5s)
 module.exports = async (countryID)=>{
     return new Promise ((resolve,reject)=>{
         //scraping
@@ -67,8 +67,11 @@ async function getStoreInfo(store,countryID){
                 if (storeData) {
                     try{
                         let html = storeData;
-                        let names = html.match(/name:[\t]*'(.+)',/g);
-                        let name = names[0].split("'")[1];
+                        //console.log(html.match(/name:[\t]*'(.+)',/g)[0]);
+                        let names = (html.match(/name:[\t]*'(.+)',/g)[0]);
+                        let name = names.substr(names.indexOf("'")+1).substr(0,names.substr(names.indexOf("'")+1).lastIndexOf("'"));
+                        //let name = names[0].split(",")[1];
+                        name = name.replace('\\','');
                         let username = names[1].split("'")[1];
                         let _n4totalLots = html.match(/\tn4totalLots:((.)*),/g)[0].split(/(\d+)/g);
                         let n4totalLots = Number(_n4totalLots.slice(_n4totalLots.length - 2, _n4totalLots.length - 1));
@@ -76,6 +79,14 @@ async function getStoreInfo(store,countryID){
                         let n4totalItems = Number(_n4totalItems.slice(_n4totalItems.length - 2, _n4totalItems.length - 1));
                         let _n4totalViews = html.match(/\tn4totalViews:((.)*),/g)[0].split(/(\d+)/g);
                         let n4totalViews = Number(_n4totalViews.slice(_n4totalViews.length - 2, _n4totalViews.length - 1));
+
+                        //new 
+                        let logoImgUrl = "https:"+html.match(/\tlogoImgURL:((.)*),/g)[0].split("'")[1];
+                        let countryName = html.match(/\tcountryName:((.)*),/g)[0].split("'")[1];
+                        let feedbackScore = Number(html.match(/\tfeedbackScore:((.)*),/g)[0].split(/(\d+)/g)[1]);
+                        let userSince= new Date(html.match(/\tuserSince:((.)*),/g)[0].split("'"));
+                        let id = Number(html.match(/\tid:((.)*),/g)[0].split(/(\d+)/g)[1]);
+                        console.log(name);
                         let obj = {
                             name: name,
                             countryID:countryID,
@@ -83,7 +94,12 @@ async function getStoreInfo(store,countryID){
                             lastUpdated: new Date,
                             n4totalLots: n4totalLots,
                             n4totalItems: n4totalItems,
-                            n4totalViews: n4totalViews
+                            n4totalViews: n4totalViews,
+                            logoImgUrl,
+                            countryName,
+                            userSince,
+                            feedbackScore,
+                            id
                         };
                         resolve(obj);
                     }catch(err){
