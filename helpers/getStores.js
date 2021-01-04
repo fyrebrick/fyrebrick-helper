@@ -60,6 +60,7 @@ async function getStoreInfo(store,countryID){
                 if(err){
                     resolve(getStoreInfo(store).then((data)=>{return data}));
                 }
+                try{
                 const storeData = res.text;
                 if(checkForQuotaLimit(storeData)){
                     reject("Quota limit exceeded");
@@ -106,6 +107,9 @@ async function getStoreInfo(store,countryID){
                         console.trace(err);
                     }
                 }
+            }catch(e){
+                logger.error(e);
+            }
             });
     })
 
