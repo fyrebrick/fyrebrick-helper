@@ -68,12 +68,10 @@ async function getStoreInfo(store,countryID){
                 if (storeData) {
                     try{
                         let html = storeData;
-                        //console.log(html.match(/name:[\t]*'(.+)',/g)[0]);
                         let names = (html.match(/name:[\t]*'(.+)',/g)[0]);
                         let name = names.substr(names.indexOf("'")+1).substr(0,names.substr(names.indexOf("'")+1).lastIndexOf("'"));
-                        //let name = names[0].split(",")[1];
                         name = name.replace('\\','');
-                        let username = names[1].split("'")[1];
+                        let username = html.match(/username:[\t]*'(.+)',/g)[0].split("'")[1];
                         let _n4totalLots = html.match(/\tn4totalLots:((.)*),/g)[0].split(/(\d+)/g);
                         let n4totalLots = Number(_n4totalLots.slice(_n4totalLots.length - 2, _n4totalLots.length - 1));
                         let _n4totalItems = html.match(/\tn4totalItems:((.)*),/g)[0].split(/(\d+)/g);
@@ -87,7 +85,7 @@ async function getStoreInfo(store,countryID){
                         let feedbackScore = Number(html.match(/\tfeedbackScore:((.)*),/g)[0].split(/(\d+)/g)[1]);
                         let userSince= new Date(html.match(/\tuserSince:((.)*),/g)[0].split("'"));
                         let id = Number(html.match(/\tid:((.)*),/g)[0].split(/(\d+)/g)[1]);
-                        console.log(name);
+                        console.log(`${username} - ${name}`);
                         let obj = {
                             name: name,
                             countryID:countryID,
