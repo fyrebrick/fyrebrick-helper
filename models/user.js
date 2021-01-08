@@ -4,6 +4,10 @@ const User = new mongoose.Schema({
         userName:{
             type:String
         },
+        isBlocked:{
+            type:Boolean,
+            default:true
+        },
         API_call_amount:{
             daily:{
                 type:Number,

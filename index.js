@@ -1,8 +1,8 @@
 module.exports = {
     models : {
-        Inventory : require('./models/inventory'),
-        Order : require('./models/order'),
-        User : require('./models/user'),
+        Inventory:require('./models/inventory'),
+        Order:require('./models/order'),
+        User:require('./models/user'),
         Store:require('./models/store')
     },
     helpers:{
