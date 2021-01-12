@@ -4,6 +4,10 @@ const User = new mongoose.Schema({
         userName:{
             type:String
         },
+        isAcceptedCookies:{
+            default:false,
+            type:Boolean
+        },
         isBlocked:{
             type:Boolean,
             default:true
