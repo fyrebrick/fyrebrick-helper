@@ -11,6 +11,7 @@ module.exports = {
         logger: require('./helpers/logger'),
         isObjectsSame: require('./helpers/isObjectsSame'),
         mappingOrderItemsForChecked: require('./helpers/mappingOrderItemsForChecked'),
-        getStores:require('./helpers/getStores')
+        getStores:require('./helpers/getStores'),
+        removeAllDuplicates:require('./helpers/bricklinkUpdater/orders/utils').removeAllDuplicates
     },
 };

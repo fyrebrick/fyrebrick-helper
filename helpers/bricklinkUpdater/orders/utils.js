@@ -131,6 +131,29 @@ const updateOrCreateOrder = async (order,user)=>{
     });
 }
 
+const removeAllDuplicates = async (CONSUMER_KEY) => {
+    //1. Get all order
+    const allOrders = await Order.find({consumer_key: CONSUMER_KEY});
+    //2. map all orders with order_id
+    const orders =  allOrders.map((order)=>{
+        return Number(order.order_id);
+    });
+    //3. check for duplicates
+    const findDuplicates = (dupes) => {
+        dupes.filter((order_id,index)=>{
+            orders.indexOf(order_id) != index
+        }
+        );
+    }
+    const duplicates = [...new Set(findDuplicates(orders))];
+    //4. delete all duplicates
+    logger.warn('found '+duplicates.length+'duplicates, removing')
+    duplicates.orders.forEach(order_id=>{
+        Order.deleteOne({order_id:order_id});
+    });
+}
+
 module.exports = {
-    updateOrCreateOrder
+    updateOrCreateOrder,
+    removeAllDuplicates
 };
