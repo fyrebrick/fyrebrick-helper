@@ -5,7 +5,7 @@ const User = new mongoose.Schema({
             type:String
         },
         isAcceptedCookies:{
-            default:false,
+            default:true, 
             type:Boolean
         },
         isBlocked:{

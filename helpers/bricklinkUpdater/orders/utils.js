@@ -133,24 +133,49 @@ const updateOrCreateOrder = async (order,user)=>{
 
 const removeAllDuplicates = async (CONSUMER_KEY) => {
     //1. Get all order
+    logger.debug(CONSUMER_KEY);
     const allOrders = await Order.find({consumer_key: CONSUMER_KEY});
     //2. map all orders with order_id
     const orders =  allOrders.map((order)=>{
         return Number(order.order_id);
     });
     //3. check for duplicates
-    const findDuplicates = (dupes) => {
-        dupes.filter((order_id,index)=>{
-            orders.indexOf(order_id) != index
-        }
-        );
+    const findAndDeleteDuplicates = () => {
+        let dupes = [];
+        orders.forEach(async (order,index)=>{
+            let amountFound = 0;
+            orders.forEach(checkingOrder=>{
+                if(order===checkingOrder){
+                    amountFound++;
+                }
+            })
+            if(amountFound>=2){
+                dupes.push(order);
+            }
+            if(orders.length==index+1){
+                //after running all orders
+                let previousRun = "";
+                dupes.sort();
+                dupes.forEach(dupe=>{
+                    //1. check if previous run is the same as the new current run
+                    if(dupe===previousRun){ 
+                        // if is same = delete that one
+                        logger.info('deleting '+dupe);
+                        Order.deleteOne({consumer_key:CONSUMER_KEY,order_id:dupe},(err,data)=>{
+                            if(err)
+                                logger.warn(err);
+                        });
+                    }else{
+                        // if is not same = overwrite previous run with one
+                        previousRun = dupe;
+                    }
+                })
+                
+            }
+        });
     }
-    const duplicates = [...new Set(findDuplicates(orders))];
-    //4. delete all duplicates
-    logger.warn('found '+duplicates.length+'duplicates, removing')
-    duplicates.orders.forEach(order_id=>{
-        Order.deleteOne({order_id:order_id});
-    });
+    findAndDeleteDuplicates();
+    return
 }
 
 module.exports = {
