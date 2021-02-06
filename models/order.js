@@ -29,6 +29,13 @@ const Order = new mongoose.Schema({
                 }
             ]
         ],
+        tags:[{
+            text:String,
+            id:Number,
+            status:String
+        }],
+        tagCount:Number,
+        tagsCaseSensitive:Boolean,
         consumer_key:String,
         description:String,
         orders_checked:Number,
