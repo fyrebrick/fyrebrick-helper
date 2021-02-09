@@ -66,7 +66,7 @@ const Order = new mongoose.Schema({
         },
         shipping:{
             method: String,
-            method_id:String,
+            method_id:Number,
             tracking_no: String,
             tracking_link: String,
             date_shipped: Date,
