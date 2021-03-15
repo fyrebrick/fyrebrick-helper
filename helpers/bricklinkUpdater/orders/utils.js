@@ -1,8 +1,8 @@
+const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../../../helpers/ApiHelper');
 const Order = require("../../../models/order");
 const mappingOrderItemsForChecked = require('../../mappingOrderItemsForChecked');
 const logger  = require("../../../helpers/logger");
 const OAuth = require('oauth');
-const {increaseApiCallAmount,hasUserExceededAPiAmount} = require('../../../helpers/ApiHelper');
 const _ = require('lodash');
 
 /**
@@ -28,7 +28,6 @@ const updateOrCreateOrder = async (order,user)=>{
         null,
         "HMAC-SHA1"
     );
-    let orderNeedsUpdate = false; // set this to true if the order needs a force update
 
     //1. Find the order in the database
     let order_db = await Order.findOne({consumer_key:user.CONSUMER_KEY,order_id:order.order_id});
@@ -64,18 +63,25 @@ const updateOrCreateOrder = async (order,user)=>{
                 new_order.data;
                 new_order.data.order_id = String(new_order.data.order_id);
                 console.log(new_order.data.order_id);
-                Order.updateOne({consumer_key:user.CONSUMER_KEY,order_id:order.order_id},new_order.data,(err,data)=>{
+                Order.updateOne({consumer_key:user.CONSUMER_KEY,order_id:order.order_id},new_order.data,async(err,data)=>{
                     if(err){
                         logger.error(`Could not update order ${order.order_id} of user ${user.email} : ${err}`);
                         return;
                     }else{
                         logger.info(`Succesfully updated order specifics of ${order.order_id}`);
                     }
+                   await addOrUpdateOrderItems(order_db,user,order,oauth);
                 });
                 
             }
         });
+    }else{
+        await addOrUpdateOrderItems(order_db,user,order,oauth);
     }
+    
+}
+
+const addOrUpdateOrderItems = async (order_db,user,order,oauth)=>{
     if(order_db){
         //if status is the same and total count is the same and the unique count is the same. then dont update this order
         if(order_db.status==order.status&&order_db.total_count==order.total_count&&order_db.unique_count==order.unique_count){
@@ -174,7 +180,6 @@ const updateOrCreateOrder = async (order,user)=>{
         
     });
 }
-
 const removeAllDuplicates = async (CONSUMER_KEY) => {
     //1. Get all order
     logger.debug(CONSUMER_KEY);

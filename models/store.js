@@ -8,8 +8,6 @@ const Store = new mongoose.Schema({
         n4totalLots: Number,
         n4totalItems: Number,
         n4totalViews: Number,
-        
-
         minBuy:Number,
         avgLotMinBuy:Number,
         sellerLotLimit:Number,
@@ -61,8 +59,6 @@ const Store = new mongoose.Schema({
         storeClosedUnlocked:Number,
         storeClosedNote:String,
         storeClosedDate:Date,
-
-        
         rank:{
             global:{
                 views:[
@@ -104,7 +100,15 @@ const Store = new mongoose.Schema({
                     }
                 ],
             },
-        }
+        },
+        store_chart:[
+            {        
+                n4totalLots: Number,
+                n4totalItems: Number,
+                n4totalViews: Number,
+                timestamp: Date
+            }
+        ]
     }
 );
 

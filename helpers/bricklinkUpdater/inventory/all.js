@@ -51,7 +51,7 @@ module.exports = async (user) => {
             //check if inventory data is correct
             if(data && data.meta && data.meta.code==200){
                 logger.info(`preparing to save ${data.data.length} items to inventory in our database for user ${user.email}`);
-                // await Inventory.deleteMany({CONSUMER_KEY:user.CONSUMER_KEY});
+                await Inventory.deleteMany({CONSUMER_KEY:user.CONSUMER_KEY});
                 const totalItems = data.data.length;
                 let itemsUpdated = 0;
                 let itemsNew = 0;
