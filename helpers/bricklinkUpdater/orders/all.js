@@ -51,9 +51,14 @@ module.exports = async (user,query="")=>{
                     logger.error(`User has exceeded the API limit of bricklink'`);
                     return;
                 }
+                let orderprocessed = 0;
                 data.data.forEach(
                     async (order) => {
                         await updateOrCreateOrder(order,user);
+                        orderprocessed++;
+                        if(orderprocessed===data.data.length){
+                            console.log("all orders processed");
+                        }
                     }
                 );
                 logger.info(`successfully found all orders for user ${user.email}`);

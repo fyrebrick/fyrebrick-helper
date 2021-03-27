@@ -137,7 +137,7 @@ const addOrUpdateOrderItems = async (order_db,user,order,oauth)=>{
                     orders_checked:0,
                     description:"",
                     consumer_key:user.CONSUMER_KEY,
-                    ...order,
+                    ...fixCountryCodeForInconsistentISO3166(order),
                     items:data_items.data
                 });
                 //7. Save the new Order
@@ -164,7 +164,7 @@ const addOrUpdateOrderItems = async (order_db,user,order,oauth)=>{
                     orders_checked:orders_checked,
                     description:order_db.description,
                     consumer_key:user.CONSUMER_KEY,
-                    ...order,
+                    ...fixCountryCodeForInconsistentISO3166(order),
                     items:data_items.data
                 };
                 Order.updateOne({consumer_key:user.CONSUMER_KEY,order_id:order.order_id},order_dbObj,(err,data)=>{
@@ -236,4 +236,24 @@ const removeAllDuplicates = async (CONSUMER_KEY) => {
 module.exports = {
     updateOrCreateOrder,
     removeAllDuplicates
+};
+
+
+/**
+ * receive the fixed order. country code is always consistent with the ISO 3166
+ * @param {} order 
+ */
+const fixCountryCodeForInconsistentISO3166 = (order) => {
+    // [issue #160](https://github.com/fyrebrick/fyrebrick/issues/160)
+    try{
+        if(order?.shipping?.address?.country_code?.toUpperCase()==="UK"){
+            order.shipping.address.country_code = "GB";
+            console.log(order.shipping.address.country_code);
+        }
+    }catch(e){
+        logger.debug(`Current order does not have any shipping information`);
+    }finally{
+        return order;
+    }
+
 };
