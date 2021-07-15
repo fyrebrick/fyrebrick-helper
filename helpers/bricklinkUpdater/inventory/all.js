@@ -50,7 +50,7 @@ module.exports = async (user) => {
                 }
             //check if inventory data is correct
             if(data && data.meta && data.meta.code==200){
-                logger.info(`preparing to save ${data.data.length} items to inventory in our database for user ${user.email}`);
+                // logger.info(`preparing to save ${data.data.length} items to inventory in our database for user ${user.email}`);
                 await Inventory.deleteMany({CONSUMER_KEY:user.CONSUMER_KEY});
                 const totalItems = data.data.length;
                 let itemsUpdated = 0;
@@ -76,7 +76,7 @@ module.exports = async (user) => {
                                     logger.error(`Could not save new inventory item ${item.inventory_id} of user ${user.email}: ${err}`);
                                     return false;
                                 }else{
-                                    logger.info(`Successfully saved new inventory item ${item.inventory_id} for user ${user.email}`);
+                                    // logger.info(`Successfully saved new inventory item ${item.inventory_id} for user ${user.email}`);
                                 }
                             })
                         }else{
